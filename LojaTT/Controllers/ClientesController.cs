@@ -29,10 +29,13 @@ namespace LojaTT.Controllers
         }
 
         // GET: api/Clientes
-        [HttpGet]
+        [HttpGet("pedidos")]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClienteAndPedidos()
         {
-            return await _context.Cliente.ToListAsync();
+            return await _context.Cliente
+                .Include(c => c.Pedidos)
+                .ThenInclude(p => p.Itens)
+                .ToListAsync();
         }
 
         // GET: api/Clientes/5
